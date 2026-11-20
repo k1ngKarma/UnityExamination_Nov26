@@ -34,6 +34,8 @@ public class CustomizablePlatformerMovement : MonoBehaviour
     private bool jumpReleased;
     private bool wasGrounded;
     private bool isGrounded;
+    public bool isMoving;
+    public CoinManager cm;
 
     [Header("Graphics")]
     [SerializeField] private SpriteRenderer spriteRenderer;
@@ -45,7 +47,7 @@ public class CustomizablePlatformerMovement : MonoBehaviour
         
         rigidbody.gravityScale = 0; // Set gravity scale to 0 so player won't "fall". We will apply our own gravity!
 
-        //animator = GetComponent<Animator>();
+        animator = GetComponent<Animator>();
     }
     
     void Update()
@@ -172,6 +174,16 @@ public class CustomizablePlatformerMovement : MonoBehaviour
         {
             jumpReleased = true;
             jumpInput = false;
+        }
+    }
+
+   public void OnCollisionEnter2D(Collision2D other)
+    {
+        if (other.gameObject.CompareTag("Coin"))
+        {
+            Destroy(other.gameObject);
+            cm.coinCounter++;
+            Debug.Log("Coins Collected: " + cm.coinCounter);
         }
     }
 }
